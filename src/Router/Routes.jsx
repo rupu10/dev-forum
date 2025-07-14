@@ -1,9 +1,11 @@
-import {
-  createBrowserRouter
-} from "react-router";
+import { createBrowserRouter } from "react-router";
 import RootLayOut from "../layOuts/RootLayOut";
 import Home from "../pages/Home/Home/Home";
 import JoinUs from "../Authentication/JoinUs";
+import Register from "../Authentication/Register";
+import DashboardLayOut from "../layOuts/DashboardLayout";
+import Profile from "../Dashboard/Pofile/Profile";
+import AddPost from "../Dashboard/AddPost/AddPost";
 
 export const router = createBrowserRouter([
   {
@@ -12,12 +14,30 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home
+        Component: Home,
       },
       {
-        path: '/join',
-        Component: JoinUs
+        path: "/join",
+        Component: JoinUs,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
+    ],
+  },
+  {
+    path: '/dashboard',
+    Component: DashboardLayOut,
+    children: [
+      {
+        path: 'profile',
+        Component: Profile
+      },
+      {
+        path: 'addPost',
+        Component: AddPost
       }
     ]
-  },
+  }
 ]);

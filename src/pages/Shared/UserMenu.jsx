@@ -33,7 +33,7 @@ const UserMenu = () => {
   return (
     <div className="relative" ref={menuRef}>
       <img
-        src={user?.photoURL || "https://i.pravatar.cc/40"} // Default avatar if no photoURL
+        src={user?.photoURL} // Default avatar if no photoURL
         alt="User Avatar"
         className="w-10 h-10 rounded-full cursor-pointer"
         onClick={() => setOpen((prev) => !prev)}
