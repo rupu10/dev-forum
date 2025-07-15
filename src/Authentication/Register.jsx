@@ -6,6 +6,8 @@ import { Link, useLocation, useNavigate } from "react-router";
 // import useAxios from "../../../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
+import axios from "axios";
+import useAxios from "../hooks/useAxios";
 
 const Register = () => {
   const {
@@ -14,8 +16,8 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const { createUser,updateUserProfile } = useAuth();
-//   const [profilePic, setProfilePic] = useState('')
-//   const axiosInstance = useAxios();
+  const [profilePic, setProfilePic] = useState('')
+  const axiosInstance = useAxios();
   const location = useLocation();
   const navigate = useNavigate()
   const from = location.state?.from || '/'
@@ -27,27 +29,27 @@ const Register = () => {
         console.log(result);
 
         // update userinfo in database
-        // const userInfo = {
-        //   email: data.email,
-        //   role: 'user',
-        //   created_at: new Date().toISOString(),
-        //   last_log_in: new Date().toISOString()
-        // }
+        const userInfo = {
+          email: data.email,
+          role: 'bronze_user',
+          created_at: new Date().toISOString(),
+          last_log_in: new Date().toISOString()
+        }
 
-        // const userRes = await axiosInstance.post('/users', userInfo);
-        // console.log(userRes.data);
+        const userRes = await axiosInstance.post('/users', userInfo);
+        console.log(userRes.data);
 
         // update user info in firebase
-        // const userProfile ={
-        //   displayName: data.name,
-        //   photoURL: profilePic
-        // }
-        // updateUserProfile(userProfile)
-        // .then(()=>{
-        //   console.log('pp updated');
+        const userProfile ={
+          displayName: data.name,
+          photoURL: profilePic
+        }
+        updateUserProfile(userProfile)
+        .then(()=>{
+          // console.log('pp updated');
           navigate(from)
-        // })
-        // .catch((err)=>console.log(err))
+        })
+        .catch((err)=>console.log(err))
 
       })
       .catch((err) => {
@@ -55,17 +57,17 @@ const Register = () => {
       });
   };
 
-//   const handleImageUpload = async(e)=>{
-//     const image = e.target.files[0];
-//     // console.log(image);
-//     const formData = new FormData();
-//     formData.append('image', image)
+  const handleImageUpload = async(e)=>{
+    const image = e.target.files[0];
+    // console.log(image);
+    const formData = new FormData();
+    formData.append('image', image)
 
-//     const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`
 
-//     const res = await axios.post(imageUploadUrl,formData)
-//     setProfilePic(res.data.data.url);
-//   }
+    const res = await axios.post(imageUploadUrl,formData)
+    setProfilePic(res.data.data.url);
+  }
 
   return (
     <div className="flex mt-10 justify-center">
@@ -85,7 +87,7 @@ const Register = () => {
             <label className="label">Image URL</label>
             <input
               type="file"
-            //   onChange={handleImageUpload}
+              onChange={handleImageUpload}
               className="input w-full"
               placeholder="Your profile picture"
             />

@@ -53,6 +53,7 @@ const MyPosts = () => {
 
   if (isLoading) return <p className="text-center mt-10">Loading posts...</p>;
 
+
   return (
     <div className="overflow-x-auto mt-10">
       <h2 className="text-2xl font-bold mb-6">My Posts</h2>
