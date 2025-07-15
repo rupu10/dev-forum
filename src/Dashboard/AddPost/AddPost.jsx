@@ -1,13 +1,16 @@
 import React from "react";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AddPost = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -16,17 +19,51 @@ const AddPost = () => {
     formState: { errors },
   } = useForm();
 
-  // ✅ Fetch post count using TanStack Query
-//   const { data: postInfo = {}, isLoading } = useQuery({
-//     queryKey: ["postCount", user?.email],
-//     enabled: !!user?.email,
-//     queryFn: async () => {
-//       const res = await axios.get(`/posts/count?email=${user.email}`);
-//       return res.data; // should return { count: number, member: boolean }
-//     },
-//   });
+  // 🔁 Get post count using TanStack Query
+  const { data: postInfo = [], isLoading } = useQuery({
+    queryKey: ["postCount", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/posts/count?email=${user.email}`);
+      return res.data; // { count: number, member: boolean }
+    },
+  });
 
-  const onSubmit = async (data) => {
+//   console.log(postInfo);
+
+  
+
+  // ✅ Mutation to add a post
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (newPost) => {
+      const res = await axiosSecure.post("/posts", newPost);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      // Optional: refetch posts list or user's post count
+      queryClient.invalidateQueries(["postCount", user.email]);
+      Swal.fire({
+        icon: "success",
+        title: "Post Created!",
+        text: "Your post has been successfully added.",
+        confirmButtonColor: "#3085d6",
+      });
+      console.log(data);
+      reset();
+    //   navigate("/dashboard/my-posts");
+    },
+    onError: (err) => {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong while posting.",
+        confirmButtonColor: "#d33",
+      });
+    },
+  });
+
+  const onSubmit = (data) => {
     const newPost = {
       title: data.title,
       description: data.description,
@@ -39,36 +76,26 @@ const AddPost = () => {
       createdAt: new Date().toISOString(),
     };
 
-    try {
-    //   const res = await axios.post("/posts", newPost);
-    console.log(newPost);
-    //   console.log(res.data);
-      reset();
-    //   navigate("/dashboard/my-posts");
-    } catch (err) {
-      console.error(err);
-    }
+    mutate(newPost);
   };
 
-//   if (isLoading) {
-//     return <div className="text-center mt-10">Loading...</div>;
-//   }
+  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
 
-//   if (postInfo.count >= 5 && !postInfo.member) {
-//     return (
-//       <div className="text-center mt-10">
-//         <h2 className="text-xl font-bold text-red-500 mb-4">
-//           You’ve reached the post limit (5 posts).
-//         </h2>
-//         <button
-//           className="btn bg-[#9ECAD6] text-black"
-//           onClick={() => navigate("/membership")}
-//         >
-//           Become a Member
-//         </button>
-//       </div>
-//     );
-//   }
+  if (postInfo.count >= 5 && !postInfo.member) {
+    return (
+      <div className="text-center mt-10">
+        <h2 className="text-xl font-bold text-red-500 mb-4">
+          You’ve reached the post limit (5 posts).
+        </h2>
+        <button
+          className="btn bg-[#9ECAD6] text-black"
+          onClick={() => navigate("/membership")}
+        >
+          Become a Member
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="lg:w-120 mx-auto mt-10 p-5 border rounded-lg shadow">
@@ -113,8 +140,12 @@ const AddPost = () => {
           {errors.tag && <p className="text-red-500">Tag is required</p>}
         </div>
 
-        <button className="btn bg-[#9ECAD6] text-black" type="submit">
-          Add Post
+        <button
+          className="btn bg-[#9ECAD6] text-black"
+          type="submit"
+          disabled={isPending}
+        >
+          {isPending ? "Posting..." : "Add Post"}
         </button>
       </form>
     </div>
@@ -122,3 +153,4 @@ const AddPost = () => {
 };
 
 export default AddPost;
+
