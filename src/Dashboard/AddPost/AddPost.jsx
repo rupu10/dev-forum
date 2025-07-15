@@ -50,7 +50,7 @@ const AddPost = () => {
       });
       console.log(data);
       reset();
-    //   navigate("/dashboard/my-posts");
+      navigate("/dashboard/myPost");
     },
     onError: (err) => {
       console.error(err);

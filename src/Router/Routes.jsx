@@ -6,6 +6,8 @@ import Register from "../Authentication/Register";
 import DashboardLayOut from "../layOuts/DashboardLayout";
 import Profile from "../Dashboard/Pofile/Profile";
 import AddPost from "../Dashboard/AddPost/AddPost";
+import PrivateRoutes from "./PrivateRoutes";
+import MyPosts from "../Dashboard/MyPosts/MyPosts";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    Component: DashboardLayOut,
+    element: <PrivateRoutes><DashboardLayOut></DashboardLayOut></PrivateRoutes>,
     children: [
       {
         path: 'profile',
@@ -37,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: 'addPost',
         Component: AddPost
+      },
+      {
+        path: 'myPost',
+        Component: MyPosts
       }
     ]
   }

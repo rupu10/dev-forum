@@ -82,7 +82,7 @@ const DashboardLayOut = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/myPosts">
+            <NavLink to="/dashboard/myPost">
               <FaListUl className="inline-block mr-2" />
               My Posts
             </NavLink>
