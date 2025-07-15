@@ -81,7 +81,7 @@ const AddPost = () => {
 
   if (isLoading) return <div className="text-center mt-10">Loading...</div>;
 
-  if (postInfo.count >= 5 && !postInfo.member) {
+  if (postInfo.count >= 5 && postInfo.role !== "gold_user") {
     return (
       <div className="text-center mt-10">
         <h2 className="text-xl font-bold text-red-500 mb-4">
