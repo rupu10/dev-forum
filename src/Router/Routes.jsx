@@ -8,6 +8,7 @@ import Profile from "../Dashboard/Pofile/Profile";
 import AddPost from "../Dashboard/AddPost/AddPost";
 import PrivateRoutes from "./PrivateRoutes";
 import MyPosts from "../Dashboard/MyPosts/MyPosts";
+import Membership from "../pages/Membership/Membership";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
         path: "/register",
         Component: Register,
       },
+      {
+        path: '/membership',
+        element: <PrivateRoutes><Membership></Membership></PrivateRoutes>
+      }
     ],
   },
   {
