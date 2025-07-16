@@ -68,6 +68,11 @@ const CommentList = () => {
           </tr>
         </thead>
         <tbody>
+        {comments.length === 0 && (
+  <div className="flex justify-center items-center h-32">
+    <p className="text-gray-500 text-lg italic">No comments yet</p>
+  </div>
+)}
           {comments.map((comment) => {
             const commentId = comment._id;
             const fullText = comment.commentText || "";

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import useAxios from "../hooks/useAxios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const PostDetails = () => {
   const { postId } = useParams();
@@ -11,6 +12,7 @@ const PostDetails = () => {
   const axiosInstance = useAxios();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [commentText, setCommentText] = useState("");
   const [voteLoading, setVoteLoading] = useState(false);
@@ -68,13 +70,23 @@ const PostDetails = () => {
 
   const handleAddComment = () => {
     if (!user) {
-      alert("You must be logged in to comment.");
-      return;
-    }
+  Swal.fire({
+    icon: 'warning',
+    title: 'Login Required',
+    text: 'You must be logged in to comment.',
+    confirmButtonText: 'OK'
+  });
+  return;
+}
     if (!commentText.trim()) {
-      alert("Comment cannot be empty.");
-      return;
-    }
+  Swal.fire({
+    icon: 'error',
+    title: 'Empty Comment',
+    text: 'Comment cannot be empty.',
+    confirmButtonText: 'OK'
+  });
+  return;
+}
     setCommentLoading(true);
     addCommentMutation.mutate(
       {
@@ -92,7 +104,20 @@ const PostDetails = () => {
 
   const handleVote = (voteType) => {
     if (!user) {
-      alert("You must be logged in to vote.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Login Required',
+        text: 'You must be logged in to vote.',
+        confirmButtonText: 'Login Now',
+        confirmButtonColor: '#3B82F6',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/join'); // Redirect using React Router
+        }
+      });
       return;
     }
     if (voteMutation.isLoading) return;

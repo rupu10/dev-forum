@@ -5,15 +5,14 @@ import Swal from "sweetalert2";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useUserRole from "../../hooks/useUserRole"; // ✅ added this
-
+import useUserRole from "../../hooks/useUserRole";
 const AddPost = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const axiosSecure = useAxiosSecure();
-  const { role, roleLoading } = useUserRole(); // ✅ get user role
-
+  const { role, roleLoading } = useUserRole();
+  
   const {
     register,
     handleSubmit,
@@ -21,17 +20,23 @@ const AddPost = () => {
     formState: { errors },
   } = useForm();
 
-  // 🔁 Get post count using TanStack Query
   const { data: postInfo = {}, isLoading } = useQuery({
     queryKey: ["postCount", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/posts/count?email=${user.email}`);
-      return res.data; // { count: number }
+      return res.data;
     },
   });
 
-  // ✅ Mutation to add a post
+  const { data: allTags = [] } = useQuery({
+    queryKey: ["tags"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/tags");
+      return res.data;
+    },
+  });
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (newPost) => {
       const res = await axiosSecure.post("/posts", newPost);
@@ -79,7 +84,6 @@ const AddPost = () => {
     return <div className="text-center mt-10">Loading...</div>;
   }
 
-  // ✅ Check if user is bronze and has 5 or more posts
   if (role === "bronze_user" && postInfo.count >= 5) {
     return (
       <div className="text-center mt-10">
@@ -130,11 +134,11 @@ const AddPost = () => {
             className="select select-bordered w-full"
           >
             <option value="">Select a tag</option>
-            <option value="javascript">JavaScript</option>
-            <option value="react">React</option>
-            <option value="mongodb">MongoDB</option>
-            <option value="nodejs">Node.js</option>
-            <option value="career">Career</option>
+            {allTags.map((tag, index) => (
+              <option key={index} value={tag.tag}>
+                {tag.tag}
+              </option>
+            ))}
           </select>
           {errors.tag && <p className="text-red-500">Tag is required</p>}
         </div>

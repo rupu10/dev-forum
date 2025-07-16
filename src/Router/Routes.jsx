@@ -16,6 +16,7 @@ import MakeAnnouncement from "../Dashboard/MakeAnnouncement/MakeAnnouncement";
 import Announcement from "../Dashboard/Announcement/Announcement";
 import PostDetails from "../PostDetails/PostDetails";
 import CommentList from "../Dashboard/CommentLists/CommentList";
+import AdminProfile from "../Dashboard/AdminProfile/AdminProfile";
 
 export const router = createBrowserRouter([
   {
@@ -71,7 +72,7 @@ export const router = createBrowserRouter([
       // admin routes
       {
         path: 'adminProfile',
-        element: <AdminRoute><AdminRoute></AdminRoute></AdminRoute>
+        element: <AdminRoute><AdminProfile></AdminProfile></AdminRoute>
       },
       {
         path: 'manageUsers',
