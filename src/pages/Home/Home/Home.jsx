@@ -13,12 +13,19 @@ const Home = () => {
     queryKey: ["posts", page, sortByPopularity, searchText],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/allPosts?page=${page}&sort=${sortByPopularity ? "popularity" : "latest"}&search=${searchText}`
+        `/allPosts?page=${page}&sort=${
+          sortByPopularity ? "popularity" : "latest"
+        }&search=${searchText}`
       );
       return res.data;
     },
     keepPreviousData: true,
   });
+
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+    setPage(1);
+  };
 
   if (isLoading) return <p>Loading posts...</p>;
   if (error) return <p>Error loading posts</p>;
@@ -35,10 +42,7 @@ const Home = () => {
           type="text"
           placeholder="Search by tag..."
           value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-            setPage(1);
-          }}
+          onChange={handleSearch}
           className="input input-bordered w-full max-w-sm"
         />
       </div>
@@ -62,7 +66,10 @@ const Home = () => {
             key={post._id}
             className="border p-4 mb-3 rounded shadow hover:shadow-lg transition cursor-pointer"
           >
-            <Link to={`/posts/${post._id}`} className="flex items-center space-x-4">
+            <Link
+              to={`/posts/${post._id}`}
+              className="flex items-center space-x-4"
+            >
               <img
                 src={post.authorImage || "/default-avatar.png"}
                 alt={post.authorName || "Author"}
@@ -71,7 +78,8 @@ const Home = () => {
               <div>
                 <h2 className="text-xl font-semibold">{post.title}</h2>
                 <p className="text-sm text-gray-600">
-                  {post.tag} | {new Date(post.createdAt).toLocaleDateString()} | Comments: {post.commentCount} | Votes:{" "}
+                  {post.tag} | {new Date(post.createdAt).toLocaleDateString()} |
+                  Comments: {post.commentCount} | Votes:{" "}
                   {(post.upVote || 0) - (post.downVote || 0)}
                 </p>
               </div>
@@ -116,4 +124,3 @@ const Home = () => {
 };
 
 export default Home;
-
