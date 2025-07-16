@@ -40,7 +40,7 @@ const Announcement = () => {
               <div>
                 <h3 className="font-semibold text-lg">{ann.authorName || "Admin"}</h3>
                 <p className="text-sm text-gray-500">
-                  {new Date(ann.createdAt).toLocaleDateString()}
+                  {new Date(ann.created_at).toLocaleDateString()}
                 </p>
               </div>
             </div>

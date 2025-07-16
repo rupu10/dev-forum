@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-
 import useAxios from "../../../hooks/useAxios";
 import { Link } from "react-router";
 
@@ -36,7 +35,7 @@ const Home = () => {
             setSortByPopularity((prev) => !prev);
             setPage(1);
           }}
-          className="btn btn-outline"
+          className="btn btn-outline bg-[#9ECAD6]"
         >
           Sort by {sortByPopularity ? "Newest" : "Popularity"}
         </button>
