@@ -9,6 +9,10 @@ import AddPost from "../Dashboard/AddPost/AddPost";
 import PrivateRoutes from "./PrivateRoutes";
 import MyPosts from "../Dashboard/MyPosts/MyPosts";
 import Membership from "../pages/Membership/Membership";
+import AdminRoute from "./AdminRoutes";
+import Reports from "../Dashboard/Reports/Reports";
+import Announcement from "../Dashboard/Announcement/Announcement";
+import ManageUsers from "../Dashboard/ManageUsers/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +52,23 @@ export const router = createBrowserRouter([
       {
         path: 'myPost',
         Component: MyPosts
+      },
+      // admin routes
+      {
+        path: 'adminProfile',
+        element: <AdminRoute><AdminRoute></AdminRoute></AdminRoute>
+      },
+      {
+        path: 'manageUsers',
+        element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
+      },
+      {
+        path:'reports',
+        element: <AdminRoute><Reports></Reports></AdminRoute>
+      },
+      {
+        path: 'announcement',
+        element: <AdminRoute><Announcement></Announcement></AdminRoute>
       }
     ]
   }

@@ -8,7 +8,7 @@ const UserMenu = () => {
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
-//   console.log(user);
+  // console.log(user.photoURL)
 
   const handleLogout = async () => {
     try {

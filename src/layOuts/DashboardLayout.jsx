@@ -4,13 +4,18 @@ import {
   FaHome,
   FaListUl,
   FaPlusCircle,
+  FaRegNewspaper,
+  FaUserCog,
   FaUserEdit,
+  FaUsers,
+  FaUserSecret,
 } from "react-icons/fa";
-// import useUserRole from "../hooks/UseUserRole";
+import useUserRole from "../hooks/useUserRole";
+
 
 const DashboardLayOut = () => {
-  //   const { role, roleLoading } = useUserRole();
-  //   console.log(role);
+    const { role, roleLoading } = useUserRole();
+    console.log(role);
 
   return (
     <div className="drawer lg:drawer-open">
@@ -88,33 +93,36 @@ const DashboardLayOut = () => {
             </NavLink>
           </li>
 
-          {/* rider link */}
-
-          {/* {!roleLoading && role === "rider" && (
-            <>
-              <li>
-                <NavLink to="/dashboard/pending-deliveries">
-                  <FaTasks className="inline-block mr-2" />
-                  Pending Deliveries
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/completed-deliveries">
-                  <FaCheckCircle className="inline-block mr-2" />
-                  Completed Deliveries
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/my-earnings">
-                  <FaWallet className="inline-block mr-2" />
-                  My Earnings
-                </NavLink>
-              </li>
-            </>
-          )} */}
 
           {/* admin links */}
-
+          {!roleLoading && role === "admin" && 
+          <>
+          <li>
+            <NavLink to="/dashboard/adminProfile">
+              <FaUserCog className="inline-block mr-2" />
+              Admin Profile
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/dashboard/manageUsers">
+              <FaUserSecret className="inline-block mr-2" />
+              Manage Users
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/dashboard/reports">
+              <FaUsers className="inline-block mr-2" />
+              Reported Activities
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/dashboard/announcement">
+              <FaRegNewspaper className="inline-block mr-2" />
+              Make Announcement
+            </NavLink>
+          </li>
+          </>
+          }
 
           
 
@@ -127,33 +135,3 @@ const DashboardLayOut = () => {
 
 export default DashboardLayOut;
 
-
-// {!roleLoading && role === "admin" && (
-//             <>
-//               <li>
-//                 <NavLink to="/dashboard/assign-rider">
-//                   <FaMotorcycle className="inline-block mr-2" />
-//                   Assign Rider
-//                 </NavLink>
-//               </li>
-//               <li>
-//                 <NavLink to="/dashboard/active-riders">
-//                   <FaUserCheck className="inline-block mr-2" />
-//                   Active Riders
-//                 </NavLink>
-//               </li>
-//               <li>
-//                 <NavLink to="/dashboard/pending-riders">
-//                   <FaUserClock className="inline-block mr-2" />
-//                   Pending Riders
-//                 </NavLink>
-//               </li>
-//               {/* admin routes */}
-//               <li>
-//                 <NavLink to="/dashboard/makeAdmin">
-//                   <FaUserShield className="inline-block mr-2" />
-//                   Make Admin
-//                 </NavLink>
-//               </li>
-//             </>
-//           )}
