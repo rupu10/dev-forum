@@ -15,6 +15,7 @@ import ManageUsers from "../Dashboard/ManageUsers/ManageUsers";
 import MakeAnnouncement from "../Dashboard/MakeAnnouncement/MakeAnnouncement";
 import Announcement from "../Dashboard/Announcement/Announcement";
 import PostDetails from "../PostDetails/PostDetails";
+import CommentList from "../Dashboard/CommentLists/CommentList";
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,11 @@ export const router = createBrowserRouter([
       {
         path: '/posts/:postId',
         Component: PostDetails
-      }
+      },
+      {
+  path: "/comments/:postId",
+  Component: CommentList,
+}
     ],
   },
   {

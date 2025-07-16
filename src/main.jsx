@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <div className="font-urbanist lg:w-4/5 mx-auto">
+    <div className="font-urbanist">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router}></RouterProvider>
