@@ -11,8 +11,9 @@ import MyPosts from "../Dashboard/MyPosts/MyPosts";
 import Membership from "../pages/Membership/Membership";
 import AdminRoute from "./AdminRoutes";
 import Reports from "../Dashboard/Reports/Reports";
-import Announcement from "../Dashboard/Announcement/Announcement";
 import ManageUsers from "../Dashboard/ManageUsers/ManageUsers";
+import MakeAnnouncement from "../Dashboard/MakeAnnouncement/MakeAnnouncement";
+import Announcement from "../Dashboard/Announcement/Announcement";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         Component: Register,
+      },
+      {
+        path: '/announcement',
+        Component: Announcement
       },
       {
         path: '/membership',
@@ -67,8 +72,8 @@ export const router = createBrowserRouter([
         element: <AdminRoute><Reports></Reports></AdminRoute>
       },
       {
-        path: 'announcement',
-        element: <AdminRoute><Announcement></Announcement></AdminRoute>
+        path: 'makeAnnouncement',
+        element: <AdminRoute><MakeAnnouncement></MakeAnnouncement></AdminRoute>
       }
     ]
   }

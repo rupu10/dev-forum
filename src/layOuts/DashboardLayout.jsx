@@ -116,7 +116,7 @@ const DashboardLayOut = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/announcement">
+            <NavLink to="/dashboard/makeAnnouncement">
               <FaRegNewspaper className="inline-block mr-2" />
               Make Announcement
             </NavLink>

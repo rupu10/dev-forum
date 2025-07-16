@@ -15,9 +15,14 @@ const Navbar = () => {
       <li>
         <NavLink to="/membership">Membership</NavLink>
       </li>
-      <li>
-        <FaBell size={37}></FaBell>
+      {
+        // announcement section
+        <li>
+        <NavLink to='/announcement'>
+          <FaBell size={20}></FaBell>
+        </NavLink>
       </li>
+      }
       {!user && <li>
         <NavLink to="/join">Join Us</NavLink>
       </li>}
