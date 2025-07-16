@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import UserMenu from "./UserMenu";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -87,7 +88,10 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
-      <div className="navbar-end">{user && <UserMenu />}</div>
+      <div className="navbar-end">
+        {user && <UserMenu />}
+        <ThemeToggle></ThemeToggle>
+        </div>
     </div>
   );
 };
