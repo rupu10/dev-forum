@@ -5,12 +5,14 @@ import Swal from "sweetalert2";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useUserRole from "../../hooks/useUserRole"; // ✅ added this
 
 const AddPost = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const axiosSecure = useAxiosSecure();
+  const { role, roleLoading } = useUserRole(); // ✅ get user role
 
   const {
     register,
@@ -20,18 +22,14 @@ const AddPost = () => {
   } = useForm();
 
   // 🔁 Get post count using TanStack Query
-  const { data: postInfo = [], isLoading } = useQuery({
+  const { data: postInfo = {}, isLoading } = useQuery({
     queryKey: ["postCount", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/posts/count?email=${user.email}`);
-      return res.data; // { count: number, member: boolean }
+      return res.data; // { count: number }
     },
   });
-
-//   console.log(postInfo);
-
-  
 
   // ✅ Mutation to add a post
   const { mutate, isPending } = useMutation({
@@ -39,8 +37,7 @@ const AddPost = () => {
       const res = await axiosSecure.post("/posts", newPost);
       return res.data;
     },
-    onSuccess: (data) => {
-      // Optional: refetch posts list or user's post count
+    onSuccess: () => {
       queryClient.invalidateQueries(["postCount", user.email]);
       Swal.fire({
         icon: "success",
@@ -48,7 +45,6 @@ const AddPost = () => {
         text: "Your post has been successfully added.",
         confirmButtonColor: "#3085d6",
       });
-      console.log(data);
       reset();
       navigate("/dashboard/myPost");
     },
@@ -79,9 +75,12 @@ const AddPost = () => {
     mutate(newPost);
   };
 
-  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  if (isLoading || roleLoading) {
+    return <div className="text-center mt-10">Loading...</div>;
+  }
 
-  if (postInfo.count >= 5 && postInfo.role !== "gold_user") {
+  // ✅ Check if user is bronze and has 5 or more posts
+  if (role === "bronze_user" && postInfo.count >= 5) {
     return (
       <div className="text-center mt-10">
         <h2 className="text-xl font-bold text-red-500 mb-4">
@@ -91,7 +90,7 @@ const AddPost = () => {
           className="btn bg-[#9ECAD6] text-black"
           onClick={() => navigate("/membership")}
         >
-          Become a Member
+          Upgrade to Gold
         </button>
       </div>
     );
@@ -153,4 +152,3 @@ const AddPost = () => {
 };
 
 export default AddPost;
-
