@@ -14,6 +14,7 @@ import Reports from "../Dashboard/Reports/Reports";
 import ManageUsers from "../Dashboard/ManageUsers/ManageUsers";
 import MakeAnnouncement from "../Dashboard/MakeAnnouncement/MakeAnnouncement";
 import Announcement from "../Dashboard/Announcement/Announcement";
+import PostDetails from "../PostDetails/PostDetails";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: '/membership',
         element: <PrivateRoutes><Membership></Membership></PrivateRoutes>
+      },
+      {
+        path: '/posts/:postId',
+        Component: PostDetails
       }
     ],
   },

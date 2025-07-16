@@ -3,10 +3,25 @@ import { FaBell } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import UserMenu from "./UserMenu";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Navbar = () => {
-    const {user} = useAuth();
-    // console.log(user);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  // Fetch announcements count
+  const { data: announcements = [] } = useQuery({
+    queryKey: ["announcements"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/announcements");
+      return res.data;
+    },
+    staleTime: 60 * 1000, // optional: cache for 1 minute
+  });
+
+  const announcementCount = announcements.length;
+
   const navItems = (
     <>
       <li>
@@ -15,19 +30,27 @@ const Navbar = () => {
       <li>
         <NavLink to="/membership">Membership</NavLink>
       </li>
-      {
-        // announcement section
-        <li>
-        <NavLink to='/announcement'>
-          <FaBell size={20}></FaBell>
+
+      {/* Announcement Bell with badge */}
+      <li className="relative">
+        <NavLink to="/announcement" className="flex items-center">
+          <FaBell size={20} />
+          {announcementCount > 0 && (
+            <span className="badge badge-error badge-sm indicator-item absolute -top-1 -right-2">
+              {announcementCount}
+            </span>
+          )}
         </NavLink>
       </li>
-      }
-      {!user && <li>
-        <NavLink to="/join">Join Us</NavLink>
-      </li>}
+
+      {!user && (
+        <li>
+          <NavLink to="/join">Join Us</NavLink>
+        </li>
+      )}
     </>
   );
+
   return (
     <div className="navbar shadow-sm">
       <div className="navbar-start">
@@ -40,13 +63,12 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
           <ul
@@ -65,12 +87,9 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
-      <div className="navbar-end">
-       {user && <UserMenu></UserMenu>}
-      </div>
+      <div className="navbar-end">{user && <UserMenu />}</div>
     </div>
   );
 };
 
 export default Navbar;
-
