@@ -5,11 +5,13 @@ import useAxios from "../hooks/useAxios";
 import { useNavigate, useParams } from "react-router";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const PostDetails = () => {
   const { postId } = useParams();
 //   console.log(postId);
   const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ const PostDetails = () => {
   } = useQuery({
     queryKey: ["post", postId],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/posts/${postId}`);
+      const res = await axiosSecure.get(`/posts/${postId}`);
       return res.data;
     },
     enabled: !!postId,

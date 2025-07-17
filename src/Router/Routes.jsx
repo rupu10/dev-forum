@@ -17,11 +17,14 @@ import Announcement from "../Dashboard/Announcement/Announcement";
 import PostDetails from "../PostDetails/PostDetails";
 import CommentList from "../Dashboard/CommentLists/CommentList";
 import AdminProfile from "../Dashboard/AdminProfile/AdminProfile";
+import Forbidden from "../ErroPage/Forbidden";
+import Error from "../ErroPage/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayOut,
+    errorElement: <Error></Error>,
     children: [
       {
         index: true,
@@ -36,56 +39,96 @@ export const router = createBrowserRouter([
         Component: Register,
       },
       {
-        path: '/announcement',
-        Component: Announcement
+        path: "/announcement",
+        Component: Announcement,
       },
       {
-        path: '/membership',
-        element: <PrivateRoutes><Membership></Membership></PrivateRoutes>
+        path: "/membership",
+        element: (
+          <PrivateRoutes>
+            <Membership></Membership>
+          </PrivateRoutes>
+        ),
       },
       {
-        path: '/posts/:postId',
+        path: "/posts/:postId",
         Component: PostDetails
       },
       {
-  path: "/comments/:postId",
-  Component: CommentList,
-}
+        path: "/comments/:postId",
+        element:<PrivateRoutes><CommentList></CommentList></PrivateRoutes>
+      },
+      {
+        path:'/forbidden',
+        Component: Forbidden
+      }
     ],
   },
   {
-    path: '/dashboard',
-    element: <PrivateRoutes><DashboardLayOut></DashboardLayOut></PrivateRoutes>,
+    path: "/dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashboardLayOut></DashboardLayOut>
+      </PrivateRoutes>
+    ),
     children: [
       {
-        path: 'profile',
-        Component: Profile
+        path: "profile",
+        element: (
+          <PrivateRoutes>
+            <Profile></Profile>
+          </PrivateRoutes>
+        ),
       },
       {
-        path: 'addPost',
-        Component: AddPost
+        path: "addPost",
+        element: (
+          <PrivateRoutes>
+            <AddPost></AddPost>
+          </PrivateRoutes>
+        ),
       },
       {
-        path: 'myPost',
-        Component: MyPosts
+        path: "myPost",
+        element: (
+          <PrivateRoutes>
+            <MyPosts></MyPosts>
+          </PrivateRoutes>
+        ),
       },
       // admin routes
       {
-        path: 'adminProfile',
-        element: <AdminRoute><AdminProfile></AdminProfile></AdminRoute>
+        path: "adminProfile",
+        element: (
+          <AdminRoute>
+            <AdminProfile></AdminProfile>
+          </AdminRoute>
+        ),
       },
       {
-        path: 'manageUsers',
-        element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
+        path: "manageUsers",
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
       {
-        path:'reports',
-        element: <AdminRoute><Reports></Reports></AdminRoute>
+        path: "reports",
+        element: (
+          <AdminRoute>
+            <Reports></Reports>
+          </AdminRoute>
+        ),
       },
       {
-        path: 'makeAnnouncement',
-        element: <AdminRoute><MakeAnnouncement></MakeAnnouncement></AdminRoute>
-      }
-    ]
-  }
+        path: "makeAnnouncement",
+        element: (
+          <AdminRoute>
+            <MakeAnnouncement></MakeAnnouncement>
+          </AdminRoute>
+        ),
+      },
+    ],
+  },
 ]);

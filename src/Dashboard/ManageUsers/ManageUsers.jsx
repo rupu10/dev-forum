@@ -1,23 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-
+import { FaSearch } from 'react-icons/fa';
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
-  // ✅ Get all users
-  const { data: users = [], isLoading } = useQuery({
-    queryKey: ['allUsers'],
+  const [searchText, setSearchText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1); // 🔄 Added
+  const limit = 10; // 🔄 Items per page
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['allUsers', searchQuery, currentPage],
     queryFn: async () => {
-      const res = await axiosSecure.get('/allUsers');
-      return res.data;
+      const params = new URLSearchParams();
+      if (searchQuery) params.append('search', searchQuery);
+      params.append('page', currentPage);
+      params.append('limit', limit);
+
+      const res = await axiosSecure.get(`/allUsers?${params.toString()}`);
+      return res.data; // { users, totalCount }
     },
+    keepPreviousData: true,
   });
 
-  // ✅ Mutation to make admin
+  const users = data?.users || [];
+  const totalCount = data?.totalCount || 0;
+  const totalPages = Math.ceil(totalCount / limit);
+
   const { mutate } = useMutation({
     mutationFn: async (userId) => {
       const res = await axiosSecure.patch(`/user/role/${userId}`, {
@@ -48,11 +61,31 @@ const ManageUsers = () => {
     });
   };
 
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset to page 1
+    setSearchQuery(searchText.trim());
+  };
+
   if (isLoading) return <div className="text-center mt-10">Loading users...</div>;
 
   return (
     <div className="mt-10 overflow-x-auto">
       <h2 className="text-2xl font-bold mb-6">Manage Users</h2>
+
+      {/* 🔍 Search input */}
+      <div className="mb-4 flex items-center gap-2">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="input input-bordered w-full max-w-xs"
+        />
+        <button onClick={handleSearch} className="btn bg-[#9ECAD6]">
+          <FaSearch />
+        </button>
+      </div>
+
       <table className="table w-full border">
         <thead className="bg-[#9ECAD6] text-black">
           <tr>
@@ -72,7 +105,7 @@ const ManageUsers = () => {
 
             return (
               <tr key={user._id}>
-                <td>{index + 1}</td>
+                <td>{(currentPage - 1) * limit + index + 1}</td>
                 <td>{user.name || 'N/A'}</td>
                 <td>{user.email}</td>
                 <td>
@@ -101,6 +134,21 @@ const ManageUsers = () => {
           )}
         </tbody>
       </table>
+
+      {/* 🔢 Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        {Array.from({ length: totalPages }, (_, idx) => (
+          <button
+            key={idx + 1}
+            onClick={() => setCurrentPage(idx + 1)}
+            className={`btn btn-sm ${
+              currentPage === idx + 1 ? 'bg-[#748DAE]' : 'btn-outline border-0'
+            }`}
+          >
+            {idx + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

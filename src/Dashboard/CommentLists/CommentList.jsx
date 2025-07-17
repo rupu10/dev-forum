@@ -26,6 +26,7 @@ const CommentList = () => {
     },
   });
 
+
   const reportMutation = useMutation({
     mutationFn: async (reportData) => {
       return axiosSecure.post("/reports", reportData);
@@ -56,7 +57,7 @@ const CommentList = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold mb-4">Comments for Post: {postId}</h2>
+      <h2 className="text-2xl font-bold mb-4">Comments for this post</h2>
 
       <table className="table w-full border">
         <thead>

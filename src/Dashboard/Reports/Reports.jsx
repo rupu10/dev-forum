@@ -1,54 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Reports = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
-  const { data: reports = [], isLoading } = useQuery({
-    queryKey: ["adminReports"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["adminReports", page],
     queryFn: async () => {
-      const res = await axiosInstance.get("/reports");
+      const res = await axiosSecure.get(`/reports?page=${page}&limit=${limit}`);
       return res.data;
     },
   });
 
+  const reports = data?.reports || [];
+  const totalCount = data?.totalCount || 0;
+  const totalPages = Math.ceil(totalCount / limit);
+
   const deleteCommentMutation = useMutation({
     mutationFn: async (commentId) => {
-      return axiosInstance.delete(`/comments/${commentId}`);
+      return axiosSecure.delete(`/comments/${commentId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["adminReports"] });
+      queryClient.invalidateQueries(["adminReports", page]);
     },
   });
 
   const dismissReportMutation = useMutation({
     mutationFn: async (reportId) => {
-      return axiosInstance.delete(`/reports/${reportId}`);
+      return axiosSecure.delete(`/reports/${reportId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["adminReports"] });
+      queryClient.invalidateQueries(["adminReports", page]);
     },
   });
 
   const handleDeleteComment = (commentId) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteCommentMutation.mutate(commentId);
-      Swal.fire("Deleted!", "The comment has been deleted.", "success");
-    }
-  });
-};
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCommentMutation.mutate(commentId);
+        Swal.fire("Deleted!", "The comment has been deleted.", "success");
+      }
+    });
+  };
 
   const handleDismissReport = (reportId) => {
     dismissReportMutation.mutate(reportId);
@@ -63,41 +69,72 @@ const Reports = () => {
       {reports.length === 0 ? (
         <p>No reports found.</p>
       ) : (
-        <table className="table w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th>Commenter Email</th>
-              <th>Comment</th>
-              <th>Feedback</th>
-              <th>Reported At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reports.map((report) => (
-              <tr key={report._id} className="border-b">
-                <td>{report.commenterEmail}</td>
-                <td>{report.commentText}</td>
-                <td>{report.feedback}</td>
-                <td>{new Date(report.createdAt).toLocaleString()}</td>
-                <td className="space-x-2">
-                  <button
-                    className="btn btn-sm btn-error"
-                    onClick={() => handleDeleteComment(report.commentId)}
-                  >
-                    Delete Comment
-                  </button>
-                  <button
-                    className="btn btn-sm btn-outline"
-                    onClick={() => handleDismissReport(report._id)}
-                  >
-                    Dismiss Report
-                  </button>
-                </td>
+        <>
+          <table className="table w-full border">
+            <thead>
+              <tr className="bg-gray-100">
+                <th>Commenter Email</th>
+                <th>Comment</th>
+                <th>Feedback</th>
+                <th>Reported At</th>
+                <th>Actions</th>
               </tr>
+            </thead>
+            <tbody>
+              {reports.map((report) => (
+                <tr key={report._id} className="border-b">
+                  <td>{report.commenterEmail}</td>
+                  <td>{report.commentText}</td>
+                  <td>{report.feedback}</td>
+                  <td>{new Date(report.createdAt).toLocaleString()}</td>
+                  <td className="space-x-2">
+                    <button
+                      className="btn btn-sm btn-error"
+                      onClick={() => handleDeleteComment(report.commentId)}
+                    >
+                      Delete Comment
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline"
+                      onClick={() => handleDismissReport(report._id)}
+                    >
+                      Dismiss Report
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center mt-6 gap-2">
+            <button
+              className="btn btn-sm"
+              disabled={page === 1}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              Previous
+            </button>
+
+            {[...Array(totalPages).keys()].map((p) => (
+              <button
+                key={p + 1}
+                className={`btn btn-sm ${page === p + 1 ? "btn-active" : ""}`}
+                onClick={() => setPage(p + 1)}
+              >
+                {p + 1}
+              </button>
             ))}
-          </tbody>
-        </table>
+
+            <button
+              className="btn btn-sm"
+              disabled={page === totalPages}
+              onClick={() => setPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
