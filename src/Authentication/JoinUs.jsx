@@ -36,8 +36,11 @@ const JoinUs = () => {
               {...register("email")}
               className="input w-full"
               placeholder="Email"
+              required
             />
-
+            {errors.Email?.type === "required" && (
+              <p className="text-red-500">email is required</p>
+            )}
             <label className="label">Password</label>
             <input
               type="password"

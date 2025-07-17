@@ -83,7 +83,11 @@ const Register = () => {
               {...register("name")}
               className="input w-full"
               placeholder="Your name"
+              required
             />
+            {errors.Email?.type === "required" && (
+              <p className="text-red-500">email is required</p>
+            )}
             {/* image upload */}
             <label className="label">Image URL</label>
             <input
