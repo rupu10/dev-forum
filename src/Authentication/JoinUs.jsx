@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
+import Swal from "sweetalert2";
 
 
 const JoinUs = () => {
@@ -19,6 +20,14 @@ const JoinUs = () => {
     signIn(data.email, data.password)
     .then(res=>{
       console.log(res.user);
+      if(res.user){
+      Swal.fire({
+        icon: "success",
+        title: "Signin successful!",
+        showConfirmButton: false,
+        timer: 1500
+      });
+              }
       navigate(from)
     })
     .catch(err=>console.log(err))

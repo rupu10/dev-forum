@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
+import Swal from "sweetalert2";
 
 const SocialLogin = () => {
   const { signInWithGoogle } = useAuth();
@@ -13,10 +14,19 @@ const SocialLogin = () => {
     signInWithGoogle()
       .then(async(res) => {
         console.log(res.user);
+        if(res.user){
+Swal.fire({
+  icon: "success",
+  title: "Signin successful!",
+  showConfirmButton: false,
+  timer: 1500
+});
+        }
         const user = res.user;
         const userInfo = {
           name: user.displayName,
           email: user.email,
+          image: user.photoURL,
           role: "bonze_user",
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
@@ -10,13 +11,18 @@ const AdminProfile = () => {
   const queryClient = useQueryClient();
   const [newTag, setNewTag] = useState("");
 
-  const { data: profile = {} } = useQuery({
-    queryKey: ["adminProfile"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/admin/profile");
-      return res.data;
-    },
-  });
+  const { user } = useAuth();
+const { data: profile = {} } = useQuery({
+  queryKey: ["adminProfile", user?.email],
+  enabled: !!user?.email, // ensures the query only runs when user.email is available
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/admin/profile?email=${user.email}`);
+    return res.data;
+  },
+});
+
+
+  // console.log(profile);
 
   const { data: stats = {} } = useQuery({
     queryKey: ["adminStats"],
@@ -25,6 +31,8 @@ const AdminProfile = () => {
       return res.data;
     },
   });
+
+  // console.log(stats);
 
   const tagMutation = useMutation({
     mutationFn: async (tag) => {
@@ -52,8 +60,8 @@ const AdminProfile = () => {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="flex items-center space-x-6 mb-6">
         <img
-          src={profile.image || "/default-avatar.png"}
-          alt={profile.name}
+          src={profile?.image || "/default-avatar.png"}
+          alt={profile?.name}
           className="w-24 h-24 rounded-full object-cover"
         />
         <div>

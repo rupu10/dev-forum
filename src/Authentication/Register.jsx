@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
 import axios from "axios";
 import useAxios from "../hooks/useAxios";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const {
@@ -27,11 +28,20 @@ const Register = () => {
     createUser(data.email, data.password)
       .then(async(result) => {
         console.log(result);
+        if(result){
+        Swal.fire({
+          icon: "success",
+          title: "Signin successful!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+                }
 
         // update userinfo in database
         const userInfo = {
           email: data.email,
           name: data.name,
+          image: profilePic,
           role: 'bronze_user',
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString()
@@ -95,6 +105,7 @@ const Register = () => {
               onChange={handleImageUpload}
               className="input w-full"
               placeholder="Your profile picture"
+              required
             />
 
 
