@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../../hooks/useAxios";
 import { Dialog } from "@headlessui/react";
 import { useParams } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const feedbackOptions = [
   "Offensive or inappropriate",
@@ -12,7 +12,7 @@ const feedbackOptions = [
 
 const CommentList = () => {
   const { postId } = useParams();
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure()
   const queryClient = useQueryClient();
   const [selectedComment, setSelectedComment] = useState(null);
   const [reported, setReported] = useState({});
@@ -21,14 +21,14 @@ const CommentList = () => {
   const { data: comments = [], isLoading } = useQuery({
     queryKey: ["comments", postId],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/comments?postId=${postId}`);
+      const res = await axiosSecure.get(`/comments?postId=${postId}`);
       return res.data;
     },
   });
 
   const reportMutation = useMutation({
     mutationFn: async (reportData) => {
-      return axiosInstance.post("/reports", reportData);
+      return axiosSecure.post("/reports", reportData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });

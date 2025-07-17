@@ -15,6 +15,7 @@ const SocialLogin = () => {
         console.log(res.user);
         const user = res.user;
         const userInfo = {
+          name: user.displayName,
           email: user.email,
           role: "bonze_user",
           created_at: new Date().toISOString(),

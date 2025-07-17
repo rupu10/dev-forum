@@ -10,3 +10,8 @@
   font-weight: 400;
   font-style: normal;
 }
+
+
+a.active{
+  @apply  bg-[#9ECAD6] text-black underline font-semibold
+}

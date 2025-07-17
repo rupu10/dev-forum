@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../../Firebase/firebase.init';
+import { axiosSecure } from '../../hooks/useAxiosSecure';
 
 
 const googleProvider = new GoogleAuthProvider();
@@ -39,6 +40,9 @@ const AuthProvider = ({children}) => {
     useEffect(()=>{
         const unSubscribe = onAuthStateChanged(auth, currentUser =>{
             setUser(currentUser)
+            if(currentUser){
+                axiosSecure.defaults.headers.common['Authorization']=`Bearer ${currentUser.accessToken}`
+            }
             setLoading(false)
         });
         return ()=>{
@@ -50,6 +54,7 @@ const AuthProvider = ({children}) => {
     const authInfo = { 
         user,
         loading,
+        setLoading,
         createUser,
         signIn,
         logOut,

@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { Link } from "react-router";
+import { FaSearch } from "react-icons/fa";
 
 const Home = () => {
   const axiosInstance = useAxios();
   const [page, setPage] = useState(1);
   const [sortByPopularity, setSortByPopularity] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["posts", page, sortByPopularity, searchText],
@@ -22,10 +24,16 @@ const Home = () => {
     keepPreviousData: true,
   });
 
-  const handleSearch = (e) => {
-    setSearchText(e.target.value);
-    setPage(1);
-  };
+//   const handleSearch = (e) => {
+//     setSearchText(e.target.value);
+//     setPage(1);
+//   };
+
+  const handleSearchSubmit = (e) => {
+  e.preventDefault();
+  setSearchText(inputValue);
+  setPage(1);
+};
 
   if (isLoading) return <p>Loading posts...</p>;
   if (error) return <p>Error loading posts</p>;
@@ -38,13 +46,18 @@ const Home = () => {
       {/* Banner + Search */}
       <div className="bg-blue-100 rounded p-6 mb-6">
         <h1 className="text-2xl font-bold mb-2">Search Posts by Tag</h1>
-        <input
-          type="text"
-          placeholder="Search by tag..."
-          value={searchText}
-          onChange={handleSearch}
-          className="input input-bordered w-full max-w-sm"
-        />
+        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 mb-6">
+  <input
+    type="text"
+    placeholder="Search by tag..."
+    value={inputValue}
+    onChange={(e) => setInputValue(e.target.value)}
+    className="input input-bordered w-full max-w-sm"
+  />
+  <button type="submit" className="btn btn-square ">
+    <FaSearch />
+  </button>
+</form>
       </div>
 
       <div className="flex justify-between mb-4">

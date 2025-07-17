@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import {
   FaHome,
@@ -11,11 +11,25 @@ import {
   FaUserSecret,
 } from "react-icons/fa";
 import useUserRole from "../hooks/useUserRole";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+
+
 
 
 const DashboardLayOut = () => {
     const { role, roleLoading } = useUserRole();
-    console.log(role);
+    // console.log(role);
+     const { user, } = useAuth();
+  const axiosSecure = useAxiosSecure();
+    // refetch();
+// console.log(user);
+    useEffect(()=>{
+        if(user){
+          
+          axiosSecure.get(`/users/${user.email}/role`)
+        }
+      },[user,axiosSecure])
 
 
   return (

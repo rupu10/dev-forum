@@ -98,9 +98,6 @@ const AdminProfile = () => {
       className="input input-bordered w-full"
       required
     />
-    {newTag.trim() === "" && (
-      <p className="text-red-500 text-xs">Tag cannot be empty</p>
-    )}
   </div>
   <button
     type="submit"
