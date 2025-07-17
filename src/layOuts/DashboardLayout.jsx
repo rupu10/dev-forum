@@ -13,6 +13,7 @@ import {
 import useUserRole from "../hooks/useUserRole";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import DashboardLayoutHome from "./dashboardLayoutHome";
 
 
 
@@ -68,6 +69,7 @@ const DashboardLayOut = () => {
           </div>
         </div>
         {/* page content here */}
+        <DashboardLayoutHome></DashboardLayoutHome>
         <Outlet></Outlet>
       </div>
       <div className="drawer-side">

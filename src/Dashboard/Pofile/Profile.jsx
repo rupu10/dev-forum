@@ -32,10 +32,10 @@ const MyProfile = () => {
 
   return (
     <div className="w-full mx-auto mt-10 p-6 rounded shadow">
-      <div className="gap-x-30 flex justify-center items-center">
+      <div className="gap-x-5 md:gap-x-30 flex justify-center items-center">
         <div>
           <img
-            className="w-40 h-40 rounded-full"
+            className="h-20 w-20 md:w-40 md:h-40 rounded-full"
             src={user.photoURL}
             alt="profile"
           />
