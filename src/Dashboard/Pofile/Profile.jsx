@@ -41,8 +41,8 @@ const MyProfile = () => {
           />
         </div>
         <div>
-          <h2 className="text-4xl">{user.displayName}</h2>
-          <p className="text-2xl">{user.email}</p>
+          <h2 className="md:text-4xl">{user.displayName}</h2>
+          <p className="md:text-2xl">{user.email}</p>
         </div>
         <div>
           {userInfo.role === "bronze_user" ? (
