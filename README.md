@@ -1,4 +1,86 @@
+# DevForum
+
+**Live Site:** [https://a-12-devforum.web.app/](https://a-12-devforum.web.app/)
+
+DevForum is a developer-centric community platform where users can post questions, share knowledge, and interact through discussions. Built with modern technologies, it offers an engaging and responsive experience for developers of all skill levels.
+
+---
+
+## 🚀 Features
+
+- 🔐 User authentication via Firebase
+- 📬 Post creation, commenting, and interaction system
+- ❤️ Like and feedback on comments
+- 🧵 Topic-based filtering and tagging
+- 📊 Dashboard with Recharts visualizations
+- 💬 Real-time UI updates using TanStack Query
+- 💸 Stripe integration for payment (if applicable)
+- 📱 Fully responsive UI using Tailwind CSS and DaisyUI
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend:
+- React 19
+- React Router v7
+- Tailwind CSS & DaisyUI
+- TanStack React Query
+- Firebase Authentication
+- Stripe Payment (via `react-stripe-js`)
+- Recharts
+- SweetAlert2
+
+### Backend:
+- Node.js
+- Express
+- MongoDB (native driver)
+- Firebase Admin SDK
+- Stripe API
+- dotenv & CORS for configuration
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # React + Vite
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

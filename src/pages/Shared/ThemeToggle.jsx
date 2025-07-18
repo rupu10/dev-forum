@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ThemeTOggle = () => {
+const ThemeToggle = () => {
     return (
         <label className="swap swap-rotate">
   {/* this hidden checkbox controls the state */}
@@ -27,4 +27,4 @@ const ThemeTOggle = () => {
     );
 };
 
-export default ThemeTOggle;
+export default ThemeToggle;
