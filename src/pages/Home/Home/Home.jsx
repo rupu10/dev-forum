@@ -24,40 +24,53 @@ const Home = () => {
     keepPreviousData: true,
   });
 
-//   const handleSearch = (e) => {
-//     setSearchText(e.target.value);
-//     setPage(1);
-//   };
+  //   const handleSearch = (e) => {
+  //     setSearchText(e.target.value);
+  //     setPage(1);
+  //   };
 
   const handleSearchSubmit = (e) => {
-  e.preventDefault();
-  setSearchText(inputValue);
-  setPage(1);
-};
+    e.preventDefault();
+    setSearchText(inputValue);
+    setPage(1);
+  };
 
-  if (isLoading) return <p>Loading posts...</p>;
+  if (isLoading) return <div className="flex items-center justify-center">
+    <div className="">
+    <span className="loading loading-spinner text-primary"></span>
+<span className="loading loading-spinner text-secondary"></span>
+<span className="loading loading-spinner text-accent"></span>
+<span className="loading loading-spinner text-neutral"></span>
+<span className="loading loading-spinner text-info"></span>
+<span className="loading loading-spinner text-success"></span>
+<span className="loading loading-spinner text-warning"></span>
+<span className="loading loading-spinner text-error"></span>
+  </div>
+  </div>;
   if (error) return <p>Error loading posts</p>;
 
   const { posts, total } = data;
   const totalPages = Math.ceil(total / 5);
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="w-10/12 mx-auto p-4 mt-12">
       {/* Banner + Search */}
-      <div className="bg-blue-100 rounded p-6 mb-6">
-        <h1 className="text-2xl font-bold mb-2">Search Posts by Tag</h1>
-        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 mb-6">
-  <input
-    type="text"
-    placeholder="Search by tag..."
-    value={inputValue}
-    onChange={(e) => setInputValue(e.target.value)}
-    className="input input-bordered w-full max-w-sm"
-  />
-  <button type="submit" className="btn btn-square ">
-    <FaSearch />
-  </button>
-</form>
+      <div className=" rounded p-6 mb-6">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="flex items-center gap-2 mb-6"
+        >
+          <input
+            type="text"
+            placeholder="Search by tag..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="input input-bordered w-full max-w-sm"
+          />
+          <button type="submit" className="btn btn-square ">
+            <FaSearch />
+          </button>
+        </form>
       </div>
 
       <div className="flex justify-between mb-4">
@@ -73,11 +86,11 @@ const Home = () => {
         </button>
       </div>
 
-      <ul>
+      <ul className="">
         {posts.map((post) => (
           <li
             key={post._id}
-            className="border p-4 mb-3 rounded shadow hover:shadow-lg transition cursor-pointer"
+            className=" p-4 mb-3 rounded hover:shadow-lg transition cursor-pointer"
           >
             <Link
               to={`/posts/${post._id}`}
@@ -90,6 +103,7 @@ const Home = () => {
               />
               <div>
                 <h2 className="text-xl font-semibold">{post.title}</h2>
+                <p>{post.description}</p>
                 <p className="text-sm text-gray-600">
                   {post.tag} | {new Date(post.createdAt).toLocaleDateString()} |
                   Comments: {post.commentCount} | Votes:{" "}

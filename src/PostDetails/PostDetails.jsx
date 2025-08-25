@@ -34,6 +34,8 @@ const PostDetails = () => {
     enabled: !!postId,
   });
 
+  console.log(post);
+
 //   console.log(user);
 
 
@@ -132,8 +134,30 @@ const PostDetails = () => {
     );
   };
 
-  if (postLoading) return <p>Loading post...</p>;
-  if (postError) return <p>Error loading post.</p>;
+  if (postLoading) return <div className="flex items-center justify-center">
+    <div className="">
+    <span className="loading loading-spinner text-primary"></span>
+<span className="loading loading-spinner text-secondary"></span>
+<span className="loading loading-spinner text-accent"></span>
+<span className="loading loading-spinner text-neutral"></span>
+<span className="loading loading-spinner text-info"></span>
+<span className="loading loading-spinner text-success"></span>
+<span className="loading loading-spinner text-warning"></span>
+<span className="loading loading-spinner text-error"></span>
+  </div>
+  </div>;
+  if (postError) return <div className="flex items-center justify-center">
+    <div className="">
+    <span className="loading loading-spinner text-primary"></span>
+<span className="loading loading-spinner text-secondary"></span>
+<span className="loading loading-spinner text-accent"></span>
+<span className="loading loading-spinner text-neutral"></span>
+<span className="loading loading-spinner text-info"></span>
+<span className="loading loading-spinner text-success"></span>
+<span className="loading loading-spinner text-warning"></span>
+<span className="loading loading-spinner text-error"></span>
+  </div>
+  </div>;
 
   const shareUrl = `${window.location.origin}/post/${postId}`;
 

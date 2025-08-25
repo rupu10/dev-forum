@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
@@ -22,6 +22,17 @@ const Navbar = () => {
   });
 
   const announcementCount = announcements.length;
+
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50); // Change after 50px scroll
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = (
     <>
@@ -53,7 +64,9 @@ const Navbar = () => {
   );
 
   return (
-    <div className=" bg-[#F5CBCB] p-1 sticky top-0 z-10">
+    <div className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-white/40 backdrop-blur-md shadow-md" : "bg-transparent"
+      }`}>
       <div className="navbar lg:w-10/12 mx-auto">
       <div className="navbar-start">
         <div className="dropdown">
@@ -80,7 +93,7 @@ const Navbar = () => {
             {navItems}
           </ul>
         </div>
-        <Link className="btn btn-ghost text-3xl">
+        <Link className="font-semibold text-3xl">
           <p>
             Dev<span className="text-[#748DAE]">Forum</span>
           </p>

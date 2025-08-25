@@ -53,7 +53,18 @@ const CommentList = () => {
     setReported((prev) => ({ ...prev, [commentId]: true }));
   };
 
-  if (isLoading) return <p className="text-center">Loading comments...</p>;
+  if (isLoading) return <div className="flex items-center justify-center">
+    <div className="">
+    <span className="loading loading-spinner text-primary"></span>
+<span className="loading loading-spinner text-secondary"></span>
+<span className="loading loading-spinner text-accent"></span>
+<span className="loading loading-spinner text-neutral"></span>
+<span className="loading loading-spinner text-info"></span>
+<span className="loading loading-spinner text-success"></span>
+<span className="loading loading-spinner text-warning"></span>
+<span className="loading loading-spinner text-error"></span>
+  </div>
+  </div>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
