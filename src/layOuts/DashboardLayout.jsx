@@ -56,7 +56,7 @@ const DashboardLayOut = () => {
             </label>
           </div>
           <div className="mx-2 flex-1 px-2 lg:hidden">
-            <Link className="text-2xl font-semibold mb-5" to="/">
+            <Link className="text-3xl font-semibold mb-5" to="/">
               <p>
                 Dashboard
               </p>
