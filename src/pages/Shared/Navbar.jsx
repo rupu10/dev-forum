@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaBell, FaHome } from "react-icons/fa";
+import { FaBell, FaCrown, FaHome } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import UserMenu from "./UserMenu";
@@ -36,12 +36,13 @@ const Navbar = () => {
 
   const navItems = (
     <>
-      <li>
+      <li className="mr-1">
         <NavLink to="/">
-        <FaHome className="inline-block mr-2" />Home</NavLink>
+        <FaHome className="inline-block" />Home</NavLink>
       </li>
       <li>
-        <NavLink to="/membership">Membership</NavLink>
+        <NavLink to="/membership">
+        <FaCrown></FaCrown>Membership</NavLink>
       </li>
 
       {/* Announcement Bell with badge */}
