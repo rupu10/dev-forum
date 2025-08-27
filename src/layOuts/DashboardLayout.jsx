@@ -15,26 +15,21 @@ import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import DashboardLayoutHome from "./dashboardLayoutHome";
 
-
-
-
 const DashboardLayOut = () => {
-    const { role, roleLoading } = useUserRole();
-    // console.log(role);
-     const { user, } = useAuth();
+  const { role, roleLoading } = useUserRole();
+  // console.log(role);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-    // refetch();
-// console.log(user);
-    useEffect(()=>{
-        if(user){
-          
-          axiosSecure.get(`/users/${user.email}/role`)
-        }
-      },[user,axiosSecure])
-
+  // refetch();
+  // console.log(user);
+  useEffect(() => {
+    if (user) {
+      axiosSecure.get(`/users/${user.email}/role`);
+    }
+  }, [user, axiosSecure]);
 
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open mt-15 md:mt-0">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* Page content here */}
@@ -61,11 +56,11 @@ const DashboardLayOut = () => {
             </label>
           </div>
           <div className="mx-2 flex-1 px-2 lg:hidden">
-            <Link className="text-3xl font-semibold mb-5" to='/'>
-          <p>
-            Dev<span className="text-[#748DAE]">Forum</span>
-          </p>
-        </Link>
+            <Link className="text-3xl font-semibold mb-5" to="/">
+              <p>
+                Dashboard
+              </p>
+            </Link>
           </div>
         </div>
         {/* page content here */}
@@ -80,11 +75,11 @@ const DashboardLayOut = () => {
         ></label>
         <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
           {/* Sidebar content here */}
-          <Link className="text-3xl font-semibold mb-5" to='/'>
-          <p>
-            Dev<span className="text-[#748DAE]">Forum</span>
-          </p>
-        </Link>
+          <Link className="text-3xl font-semibold mb-5" to="/">
+            <p>
+              Dev<span className="text-[#748DAE]">Forum</span>
+            </p>
+          </Link>
           <li>
             <NavLink to="/dashboard">
               <FaHome className="inline-block mr-2" />
@@ -110,40 +105,35 @@ const DashboardLayOut = () => {
             </NavLink>
           </li>
 
-
           {/* admin links */}
-          {!roleLoading && role === "admin" && 
-          <>
-          <li>
-            <NavLink to="/dashboard/adminProfile">
-              <FaUserCog className="inline-block mr-2" />
-              Admin Profile
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/manageUsers">
-              <FaUserSecret className="inline-block mr-2" />
-              Manage Users
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/reports">
-              <FaUsers className="inline-block mr-2" />
-              Reported Activities
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/makeAnnouncement">
-              <FaRegNewspaper className="inline-block mr-2" />
-              Make Announcement
-            </NavLink>
-          </li>
-          </>
-          }
-
-          
-
-          
+          {!roleLoading && role === "admin" && (
+            <>
+              <li>
+                <NavLink to="/dashboard/adminProfile">
+                  <FaUserCog className="inline-block mr-2" />
+                  Admin Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/manageUsers">
+                  <FaUserSecret className="inline-block mr-2" />
+                  Manage Users
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reports">
+                  <FaUsers className="inline-block mr-2" />
+                  Reported Activities
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/makeAnnouncement">
+                  <FaRegNewspaper className="inline-block mr-2" />
+                  Make Announcement
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </div>
@@ -151,4 +141,3 @@ const DashboardLayOut = () => {
 };
 
 export default DashboardLayOut;
-

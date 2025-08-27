@@ -94,7 +94,7 @@ const Home = () => {
           >
             <Link
               to={`/posts/${post._id}`}
-              className="flex items-center space-x-4"
+              className="flex space-x-4"
             >
               <img
                 src={post.authorImage || "/default-avatar.png"}
@@ -105,7 +105,7 @@ const Home = () => {
                 <h2 className="text-xl font-semibold">{post.title}</h2>
                 <p>{post.description}</p>
                 <p className="text-sm text-gray-600">
-                  {post.tag} | {new Date(post.createdAt).toLocaleDateString()} |
+                  <span className="border-1 rounded-2xl p-1">{post.tag}</span> | {new Date(post.createdAt).toLocaleDateString()} |
                   Comments: {post.commentCount} | Votes:{" "}
                   {(post.upVote || 0) - (post.downVote || 0)}
                 </p>
