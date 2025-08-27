@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaHome } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import UserMenu from "./UserMenu";
@@ -37,7 +37,8 @@ const Navbar = () => {
   const navItems = (
     <>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/">
+        <FaHome className="inline-block mr-2" />Home</NavLink>
       </li>
       <li>
         <NavLink to="/membership">Membership</NavLink>
