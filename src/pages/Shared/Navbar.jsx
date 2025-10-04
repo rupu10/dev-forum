@@ -5,7 +5,6 @@ import useAuth from "../../hooks/useAuth";
 import UserMenu from "./UserMenu";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -36,13 +35,13 @@ const Navbar = () => {
 
   const navItems = (
     <>
-      <li className="mr-1">
-        <NavLink to="/">
-        <FaHome className="inline-block" />Home</NavLink>
+      <li className="flex">
+        <NavLink to="/" className="lg:flex justify-center items-center">
+        <FaHome className="" />Home</NavLink>
       </li>
-      <li>
-        <NavLink to="/membership">
-        <FaCrown></FaCrown>Membership</NavLink>
+      <li className="">
+        <NavLink to="/membership" className="lg:flex justify-center items-center">
+        <FaCrown className="inline-block"></FaCrown>Membership</NavLink>
       </li>
 
       {/* Announcement Bell with badge */}
@@ -102,10 +101,10 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{navItems}</ul>
+        <ul className="flex items-center gap-x-3">{navItems}</ul>
       </div>
       <div className="navbar-end space-x-4">
-        <ThemeToggle></ThemeToggle>
+        <button className="btn btn-primary"> blue</button>
         {user && <UserMenu />}
         </div>
     </div>

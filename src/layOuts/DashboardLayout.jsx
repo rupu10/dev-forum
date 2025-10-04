@@ -28,8 +28,10 @@ const DashboardLayOut = () => {
     }
   }, [user, axiosSecure]);
 
+  
+
   return (
-    <div className="drawer lg:drawer-open mt-15 md:mt-0">
+    <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* Page content here */}

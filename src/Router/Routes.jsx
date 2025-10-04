@@ -67,73 +67,72 @@ export const router = createBrowserRouter([
         Component: Forbidden,
       },
       {
-    path: "/dashboard",
-    element: (
-      <PrivateRoutes>
-        <DashboardLayOut></DashboardLayOut>
-      </PrivateRoutes>
-    ),
-    children: [
-      {
-        path: "profile",
+        path: "/dashboard",
         element: (
           <PrivateRoutes>
-            <Profile></Profile>
+            <DashboardLayOut></DashboardLayOut>
           </PrivateRoutes>
         ),
-      },
-      {
-        path: "addPost",
-        element: (
-          <PrivateRoutes>
-            <AddPost></AddPost>
-          </PrivateRoutes>
-        ),
-      },
-      {
-        path: "myPost",
-        element: (
-          <PrivateRoutes>
-            <MyPosts></MyPosts>
-          </PrivateRoutes>
-        ),
-      },
-      // admin routes
-      {
-        path: "adminProfile",
-        element: (
-          <AdminRoute>
-            <AdminProfile></AdminProfile>
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "manageUsers",
-        element: (
-          <AdminRoute>
-            <ManageUsers></ManageUsers>
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "reports",
-        element: (
-          <AdminRoute>
-            <Reports></Reports>
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "makeAnnouncement",
-        element: (
-          <AdminRoute>
-            <MakeAnnouncement></MakeAnnouncement>
-          </AdminRoute>
-        ),
+        children: [
+          {
+            path: "profile",
+            element: (
+              <PrivateRoutes>
+                <Profile></Profile>
+              </PrivateRoutes>
+            ),
+          },
+          {
+            path: "addPost",
+            element: (
+              <PrivateRoutes>
+                <AddPost></AddPost>
+              </PrivateRoutes>
+            ),
+          },
+          {
+            path: "myPost",
+            element: (
+              <PrivateRoutes>
+                <MyPosts></MyPosts>
+              </PrivateRoutes>
+            ),
+          },
+          // admin routes
+          {
+            path: "adminProfile",
+            element: (
+              <AdminRoute>
+                <AdminProfile></AdminProfile>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "manageUsers",
+            element: (
+              <AdminRoute>
+                <ManageUsers></ManageUsers>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "reports",
+            element: (
+              <AdminRoute>
+                <Reports></Reports>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "makeAnnouncement",
+            element: (
+              <AdminRoute>
+                <MakeAnnouncement></MakeAnnouncement>
+              </AdminRoute>
+            ),
+          },
+        ],
       },
     ],
   },
-    ],
-  },
-  
 ]);

@@ -1,14 +1,22 @@
 import React from 'react';
 import Home from '../pages/Home/Home/Home';
 import Navbar from '../pages/Shared/Navbar';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import Footer from '../pages/Shared/Footer';
+import { conditionalHeader } from '../conditionalLayout/ConditionalHeader';
+import ThemeToggle from '../pages/Shared/ThemeToggle';
 
 const RootLayOut = () => {
+    const location = useLocation();
+  const hideHeader = conditionalHeader(location.pathname)
     return (
         <div >
-            <Navbar></Navbar>
-            <div className='md:mt-15'>
+            {!hideHeader && <Navbar></Navbar>}
+            {/* <Navbar></Navbar> */}
+            <div className='md:mt-15 '>
+                <div className='fixed top-60 right-4 z-50'>
+                    <ThemeToggle></ThemeToggle>
+                </div>
                 <Outlet></Outlet>
             </div>
             <Footer></Footer>
