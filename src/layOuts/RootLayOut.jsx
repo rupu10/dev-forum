@@ -12,9 +12,8 @@ const RootLayOut = () => {
     return (
         <div >
             {!hideHeader && <Navbar></Navbar>}
-            {/* <Navbar></Navbar> */}
-            <div className='md:mt-15 '>
-                <div className='fixed top-60 right-4 z-50'>
+            <div className=''>
+                <div className='fixed top-60 right-0 p-1.5  bg-base-200 rounded-l-xl z-50'>
                     <ThemeToggle></ThemeToggle>
                 </div>
                 <Outlet></Outlet>

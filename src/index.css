@@ -3,14 +3,13 @@
 
 @import "tailwindcss";
  @plugin "daisyui" {
-  themes: light --default, dark ;
+  themes: dark --default, light ;
   /* themes: light --default; */
  }
 
 
  @plugin "daisyui/theme" {
   name: "light";
-  default: true;
   --color-primary: blue;
   --color-secondary: teal;
   --color-base-content: oklch(20% 0.05 240);
@@ -20,7 +19,7 @@
   name: "dark";
   --color-primary: black;
   --color-secondary: teal;
-  --color-base-content: red;
+  --color-base-content: white;
 }
 
 .font-urbanist {
@@ -32,5 +31,5 @@
 
 
 a.active{
-  @apply  bg-[#9ECAD6] text-black underline font-semibold
+  @apply font-semibold
 }

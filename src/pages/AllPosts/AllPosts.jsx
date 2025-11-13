@@ -1,28 +1,41 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../../../hooks/useAxios";
 import { Link } from "react-router";
 import { FaSearch, FaFire, FaClock, FaChevronDown, FaComment, FaArrowUp, FaArrowDown, FaTimes } from "react-icons/fa";
+import useAxios from "../../hooks/useAxios";
 
-const Home = () => {
+const AllPosts = () => {
   const axiosInstance = useAxios();
   const [page, setPage] = useState(1);
   const [sortByPopularity, setSortByPopularity] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["posts", page, sortByPopularity],
+    queryKey: ["posts", page, sortByPopularity, searchText],
     queryFn: async () => {
       const res = await axiosInstance.get(
         `/allPosts?page=${page}&sort=${
           sortByPopularity ? "popularity" : "latest"
-        }`
+        }&search=${searchText}`
       );
       return res.data;
     },
     keepPreviousData: true,
   });
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearchText(inputValue);
+    setPage(1);
+  };
+
+  const handleClearSearch = () => {
+    setInputValue("");
+    setSearchText("");
+    setPage(1);
+  };
 
   const calculateTimeAgo = (dateString) => {
     const date = new Date(dateString);
@@ -70,7 +83,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-base-200 pt-20">
-      <div className="md:w-10/12 lg:max-w-7xl mx-auto py-">
+      <div className="md:w-10/12 lg:max-w-7xl mx-auto py-4">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
@@ -79,7 +92,54 @@ const Home = () => {
               <p className="text-base-content/70">Connect, collaborate, and grow with fellow developers</p>
             </div>
             
+            {/* Search Bar */}
+            <form onSubmit={handleSearchSubmit} className="w-full lg:w-auto">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search by tags, topics, or keywords..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="input input-bordered input-lg w-full lg:w-96 bg-base-100 border-base-300 pl-12 pr-12"
+                />
+                <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-base-content/50" />
+                {inputValue && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-base-content/50 hover:text-base-content"
+                  >
+                    <FaTimes />
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
+
+          {/* Search Results Header */}
+          {searchText && (
+            <div className="mb-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <FaSearch className="text-primary" />
+                  <div>
+                    <h3 className="font-semibold text-base-content">
+                      Showing results for: <span className="text-primary">"{searchText}"</span>
+                    </h3>
+                    <p className="text-sm text-base-content/70">
+                      Found {total} post{total !== 1 ? 's' : ''} matching your search
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleClearSearch}
+                  className="btn btn-outline btn-sm border-primary text-primary hover:bg-primary hover:text-white"
+                >
+                  Clear Search
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Sort and Stats Bar */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 bg-base-100 rounded-xl shadow-sm border border-base-300">
@@ -137,6 +197,10 @@ const Home = () => {
                   </div>
                 )}
               </div>
+            </div>
+
+            <div className="text-base-content/70">
+              {searchText ? `Showing ${posts.length} of ${total} results` : `Showing ${posts.length} of ${total} posts`}
             </div>
           </div>
         </div>
@@ -274,9 +338,33 @@ const Home = () => {
             </button>
           </div>
         )}
+
+        {/* Empty State */}
+        {posts.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-base-content mb-2">
+              {searchText ? 'No posts found' : 'No posts available'}
+            </h3>
+            <p className="text-base-content/70 mb-4">
+              {searchText 
+                ? `No posts found for "${searchText}". Try adjusting your search terms.`
+                : 'Be the first to start a discussion!'
+              }
+            </p>
+            {searchText && (
+              <button
+                onClick={handleClearSearch}
+                className="btn btn-primary"
+              >
+                Clear Search
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default AllPosts;

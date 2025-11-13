@@ -31,7 +31,7 @@ const DashboardLayOut = () => {
   
 
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open top-0">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* Page content here */}

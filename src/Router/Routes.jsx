@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import RootLayOut from "../layOuts/RootLayOut";
-import Home from "../pages/Home/Home/Home";
 import JoinUs from "../Authentication/JoinUs";
 import Register from "../Authentication/Register";
 import DashboardLayOut from "../layOuts/DashboardLayout";
@@ -19,6 +18,8 @@ import CommentList from "../Dashboard/CommentLists/CommentList";
 import AdminProfile from "../Dashboard/AdminProfile/AdminProfile";
 import Forbidden from "../ErroPage/Forbidden";
 import Error from "../ErroPage/Error";
+import HomeLayout from "../pages/HomeLayout/HomeLayout";
+import AllPosts from "../pages/AllPosts/AllPosts";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home,
+        Component: HomeLayout,
+      },
+      {
+        path: '/allPosts',
+        Component: AllPosts
       },
       {
         path: "/join",
