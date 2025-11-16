@@ -13,7 +13,7 @@ const RootLayOut = () => {
         <div >
             {!hideHeader && <Navbar></Navbar>}
             <div className=''>
-                <div className='fixed top-60 right-0 p-1.5  bg-base-200 rounded-l-xl z-50'>
+                <div className='fixed top-60 right-4 p-1.5 bg-base-200 rounded-l-xl z-50'>
                     <ThemeToggle></ThemeToggle>
                 </div>
                 <Outlet></Outlet>
