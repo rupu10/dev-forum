@@ -289,7 +289,6 @@ const Register = () => {
             </form>
 
             {/* Divider */}
-            <div className="divider my-8">OR</div>
 
             {/* Social Login */}
             <SocialLogin />
